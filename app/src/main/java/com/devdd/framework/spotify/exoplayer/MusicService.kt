@@ -1,12 +1,11 @@
 package com.devdd.framework.spotify.exoplayer
 
 import android.app.PendingIntent
-import android.media.browse.MediaBrowser
 import android.os.Bundle
-import android.service.media.MediaBrowserService
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.media.MediaBrowserServiceCompat
+import com.devdd.framework.spotify.exoplayer.callbacks.MusicPlayerNotificationListener
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
@@ -22,6 +21,7 @@ import javax.inject.Inject
  * Copyright (c) 2020 deepakdawade.dd@gmail.com All rights reserved.
  **/
 private const val SERVICE_TAG = "musicService"
+
 @AndroidEntryPoint
 class MusicService : MediaBrowserServiceCompat() {
 
@@ -39,16 +39,29 @@ class MusicService : MediaBrowserServiceCompat() {
 
     private lateinit var mediaSessionConnector: MediaSessionConnector
 
+    var isForegroundService = false
+
+    lateinit var musicNotificationManager: MusicNotificationManager
+
     override fun onCreate() {
         super.onCreate()
         val activityIntent = packageManager?.getLaunchIntentForPackage(packageName)?.let {
-            PendingIntent.getActivity(this,0,it,0)
+            PendingIntent.getActivity(this, 0, it, 0)
         }
         mediaSession = MediaSessionCompat(this, SERVICE_TAG).apply {
             setSessionActivity(activityIntent)
             isActive = true
         }
         sessionToken = mediaSession.sessionToken
+
+        MusicNotificationManager(
+            this,
+            mediaSession.sessionToken,
+            MusicPlayerNotificationListener(this)
+        ) {
+
+        }
+
         mediaSessionConnector = MediaSessionConnector(mediaSession)
         mediaSessionConnector.setPlayer(exoPlayer)
     }
