@@ -8,11 +8,14 @@ import io.objectbox.annotation.Id
  * Copyright (c) 2020 deepakdawade.dd@gmail.com All rights reserved.
  **/
 @Entity
-data class Song(
-    @Id
-    var mediaId:Long = 0,
-    val mediaUrl:String = "",
-    val mediaTitle:String = "",
-    val mediaSubtitle:String = "",
-    val mediaThumbnail:String = ""
+data class Music(
+    @Id(assignable = true)
+    var obId:Long = 0,
+    var mediaId: String = "",
+    val mediaUrl: String = "",
+    val title: String = "",
+    val subtitle: String = "",
+    val mediaThumbnail: String = "",
+    val imageUrl: String,
+    val songUrl: String
 )
