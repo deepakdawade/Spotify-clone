@@ -8,6 +8,8 @@ import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.media.MediaBrowserServiceCompat
+import com.devdd.framework.spotify.exoplayer.MusicContants.MEDIA_ROOT_ID
+import com.devdd.framework.spotify.exoplayer.MusicContants.NETWORK_ERROR
 import com.devdd.framework.spotify.exoplayer.callbacks.MusicPlaybackPreparer
 import com.devdd.framework.spotify.exoplayer.callbacks.MusicPlayerEventListener
 import com.devdd.framework.spotify.exoplayer.callbacks.MusicPlayerNotificationListener
@@ -132,6 +134,7 @@ class MusicService : MediaBrowserServiceCompat() {
                             isPlayerInitialized = true
                         }
                     } else {
+                        mediaSession.sendSessionEvent(NETWORK_ERROR, null)
                         result.sendResult(null)
                     }
                 }

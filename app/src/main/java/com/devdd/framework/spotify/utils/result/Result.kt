@@ -1,8 +1,5 @@
 package com.devdd.framework.spotify.utils.result
 
-import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.CancellationException
-
 /**
  * A generic class that holds a value with its loading status.
  * @param <T>

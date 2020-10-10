@@ -1,6 +1,7 @@
 package com.devdd.framework.spotify.data.remote
 
 import com.devdd.framework.spotify.data.local.entities.Music
+import com.devdd.framework.spotify.exoplayer.MusicContants.SONG_COLLECTION
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
@@ -10,7 +11,7 @@ import kotlinx.coroutines.tasks.await
  **/
 class MusicRepository {
     private val firebase = FirebaseFirestore.getInstance()
-    private val songCollection = firebase.collection(FirebaseConstants.SONG_COLLECTION)
+    private val songCollection = firebase.collection(SONG_COLLECTION)
 
     suspend fun getAllSongs(): List<Music> {
         return try {
