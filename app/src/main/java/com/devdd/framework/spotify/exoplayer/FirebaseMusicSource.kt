@@ -6,7 +6,7 @@ import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.MediaMetadataCompat.*
 import androidx.core.net.toUri
-import com.devdd.framework.spotify.data.local.objectbox.database.BoxMusic
+import com.devdd.framework.spotify.data.remote.MusicDatabase
 import com.devdd.framework.spotify.exoplayer.State.*
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
@@ -21,12 +21,12 @@ import javax.inject.Inject
  **/
 //Universal music player:Google
 class FirebaseMusicSource @Inject constructor(
-    private val boxMusic:BoxMusic
+    private val database: MusicDatabase
 ){
     var songs = emptyList<MediaMetadataCompat>()
     suspend fun fetchMediaData() = withContext(Dispatchers.IO){
         state = STATE_INITIALIZING
-        val allSongs = boxMusic.getAllSongs()
+        val allSongs = database.getAllSongs()
         songs = allSongs.map{song->
             MediaMetadataCompat.Builder()
                 .putString(METADATA_KEY_ARTIST,song.subtitle)

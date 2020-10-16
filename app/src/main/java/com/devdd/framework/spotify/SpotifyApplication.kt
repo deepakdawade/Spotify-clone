@@ -2,7 +2,6 @@ package com.devdd.framework.spotify
 
 import android.app.Application
 import com.bumptech.glide.RequestManager
-import com.devdd.framework.spotify.data.local.objectbox.ObjectBox
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import javax.inject.Inject
@@ -16,7 +15,6 @@ class SpotifyApplication : Application() {
     @Inject lateinit var glide:RequestManager
     override fun onCreate() {
         super.onCreate()
-        ObjectBox.init(this)
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
