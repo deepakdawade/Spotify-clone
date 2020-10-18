@@ -18,5 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".exoplayer.MusicService">
+            <intent-filter>
+                <action android:name="android.service.media.MediaBrowserService"/>
+            </intent-filter>
+        </service>
     </application>
 </manifest>

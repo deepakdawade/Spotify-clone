@@ -19,20 +19,17 @@ import com.devdd.framework.spotify.utils.result.observeEvent
  * Copyright (c) 2020 deepakdawade.dd@gmail.com All rights reserved.
  **/
 inline fun <reified T : AppCompatActivity> AppCompatActivity.finishAndLaunch(
-        noinline with: (Intent.() -> Intent) = { Intent() }) {
+    noinline with: (Intent.() -> Intent) = { Intent() },
+) {
     with(Intent()).setClass(this, T::class.java).also {
         startActivity(it)
     }
     finish()
 }
 
-inline fun <reified T : ViewDataBinding> AppCompatActivity.bindingWithLifecycleOwner(
-        @LayoutRes layoutId: Int,
-        bind: (T.() -> Unit) = {}): T {
-
-    val binding: T = DataBindingUtil.setContentView(this, layoutId)
+fun <V : ViewDataBinding> AppCompatActivity.bindingWithLifecycleOwner(@LayoutRes layoutId: Int): V {
+    val binding: V = DataBindingUtil.setContentView(this, layoutId)
     binding.lifecycleOwner = this
-    binding.bind()
     return binding
 }
 

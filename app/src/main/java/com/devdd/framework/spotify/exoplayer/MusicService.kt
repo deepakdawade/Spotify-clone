@@ -77,7 +77,7 @@ class MusicService : MediaBrowserServiceCompat() {
         }
         sessionToken = mediaSession.sessionToken
 
-        MusicNotificationManager(
+        musicNotificationManager = MusicNotificationManager(
             this,
             mediaSession.sessionToken,
             MusicPlayerNotificationListener(this)

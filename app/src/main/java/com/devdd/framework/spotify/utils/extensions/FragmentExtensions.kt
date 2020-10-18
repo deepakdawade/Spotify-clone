@@ -21,16 +21,13 @@ inline fun <reified T : AppCompatActivity> Fragment.launch(
     }
 }
 
-inline fun <T : ViewDataBinding> Fragment.bindingWithLifecycleOwner(
+fun <T : ViewDataBinding> Fragment.bindingWithLifecycleOwner(
         inflater: LayoutInflater,
         @LayoutRes layoutId: Int,
-        container: ViewGroup?,
-        bind: (T.() -> Unit) = {}): T {
-
+        container: ViewGroup?): T {
 
     val binding: T = DataBindingUtil.inflate(inflater, layoutId, container, false)
     binding.lifecycleOwner = viewLifecycleOwner
-    binding.bind()
     return binding
 }
 
