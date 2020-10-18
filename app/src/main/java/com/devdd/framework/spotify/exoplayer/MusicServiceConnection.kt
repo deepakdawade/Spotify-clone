@@ -27,7 +27,7 @@ class MusicServiceConnection(
     val networkError: LiveData<Event<Resource<Boolean>>> get() = _networkError
 
     private val _playbackState:MutableLiveData<PlaybackStateCompat?> = MutableLiveData()
-    val isNetworkConnected: LiveData<PlaybackStateCompat?> get() = _playbackState
+    val playbackState: LiveData<PlaybackStateCompat?> get() = _playbackState
 
     private val _currentPlayingSong:MutableLiveData<MediaMetadataCompat?> = MutableLiveData()
     val currentPlayingSong: LiveData<MediaMetadataCompat?> get() = _currentPlayingSong
