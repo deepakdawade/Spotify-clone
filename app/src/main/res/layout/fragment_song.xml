@@ -3,11 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="song"
-            type="com.devdd.framework.spotify.data.entities.Song" />
-    </data>
+    <data></data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,15 +14,14 @@
             android:id="@+id/tvSongName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="SONG NAME"
-            android:text="@{song.title}"
             android:gravity="center"
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/ivSongImage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="SONG NAME" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivSongImage"
@@ -42,13 +37,13 @@
             android:id="@+id/tvCurTime"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            tools:text="00:00"
             android:layout_marginStart="16dp"
+            android:gravity="center"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/seekBar"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/seekBar" />
+            app:layout_constraintTop_toTopOf="@+id/seekBar"
+            tools:text="00:00" />
 
         <SeekBar
             android:id="@+id/seekBar"
@@ -62,13 +57,13 @@
             android:id="@+id/tvSongDuration"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            tools:text="00:00"
             android:layout_marginEnd="16dp"
+            android:gravity="center"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/seekBar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/seekBar" />
+            app:layout_constraintTop_toTopOf="@+id/seekBar"
+            tools:text="00:00" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivPlayPauseDetail"

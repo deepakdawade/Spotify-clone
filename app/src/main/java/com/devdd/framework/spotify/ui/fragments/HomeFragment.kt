@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.devdd.framework.spotify.adapters.SongAdapter
 import com.devdd.framework.spotify.databinding.FragmentHomeBinding
 import com.devdd.framework.spotify.other.Status
@@ -43,9 +42,10 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setupRecyclerView() = binding.rvAllSongs.apply {
-        adapter = songAdapter
-        layoutManager = LinearLayoutManager(requireContext())
+    private fun setupRecyclerView() {
+        binding.rvAllSongs.apply {
+            adapter = songAdapter
+        }
     }
 
     private fun subscribeToObservers() {
