@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="song"
+            type="com.devdd.framework.spotify.data.entities.Song" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,14 +19,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="SONG NAME"
+            tools:text="SONG NAME"
             android:textSize="24sp"
+            android:text="@{song.title}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/ivSongImage"
             app:layout_constraintTop_toTopOf="@+id/ivSongImage" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivSongImage"
             android:layout_width="300dp"
             android:layout_height="300dp"
@@ -39,7 +42,7 @@
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="00:00"
+            tools:text="00:00"
             android:layout_marginStart="16dp"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/seekBar"
@@ -60,14 +63,14 @@
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="00:00"
+            tools:text="00:00"
             android:layout_marginEnd="16dp"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/seekBar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/seekBar" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivPlayPauseDetail"
             android:layout_width="75dp"
             android:layout_height="75dp"
@@ -78,7 +81,7 @@
             app:layout_constraintStart_toStartOf="@+id/tvCurTime"
             app:layout_constraintTop_toBottomOf="@+id/seekBar" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivSkipPrevious"
             android:layout_width="56dp"
             android:layout_height="56dp"
@@ -88,7 +91,7 @@
             app:layout_constraintEnd_toStartOf="@+id/ivPlayPauseDetail"
             app:layout_constraintTop_toTopOf="@+id/ivPlayPauseDetail" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivSkip"
             android:layout_width="56dp"
             android:layout_height="56dp"
