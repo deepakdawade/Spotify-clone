@@ -7,36 +7,33 @@ import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.devdd.framework.spotify.exoplayer.MusicContants.NETWORK_ERROR
-import com.devdd.framework.spotify.utils.result.Event
-import com.devdd.framework.spotify.utils.result.Resource
+import com.devdd.framework.spotify.other.Constants.NETWORK_ERROR
+import com.devdd.framework.spotify.other.Event
+import com.devdd.framework.spotify.other.Resource
 
-/**
- * Created by @author Deepak Dawade on 10/10/2020 at 11:26 PM.
- * Copyright (c) 2020 deepakdawade.dd@gmail.com All rights reserved.
- **/
 class MusicServiceConnection(
-    private val context: Context
+    context: Context
 ) {
-    private val _networkConnected:MutableLiveData<Event<Resource<Boolean>>> = MutableLiveData()
-    val networkConnected: LiveData<Event<Resource<Boolean>>> get() = _networkConnected
+    private val _isConnected = MutableLiveData<Event<Resource<Boolean>>>()
+    val isConnected: LiveData<Event<Resource<Boolean>>> = _isConnected
 
-    private val _networkError:MutableLiveData<Event<Resource<Boolean>>> = MutableLiveData()
-    val networkError: LiveData<Event<Resource<Boolean>>> get() = _networkError
+    private val _networkError = MutableLiveData<Event<Resource<Boolean>>>()
+    val networkError: LiveData<Event<Resource<Boolean>>> = _networkError
 
-    private val _playbackState:MutableLiveData<PlaybackStateCompat?> = MutableLiveData()
-    val playbackState: LiveData<PlaybackStateCompat?> get() = _playbackState
+    private val _playbackState = MutableLiveData<PlaybackStateCompat?>()
+    val playbackState: LiveData<PlaybackStateCompat?> = _playbackState
 
-    private val _currentPlayingSong:MutableLiveData<MediaMetadataCompat?> = MutableLiveData()
-    val currentPlayingSong: LiveData<MediaMetadataCompat?> get() = _currentPlayingSong
+    private val _curPlayingSong = MutableLiveData<MediaMetadataCompat?>()
+    val curPlayingSong: LiveData<MediaMetadataCompat?> = _curPlayingSong
+    
+    lateinit var mediaController: MediaControllerCompat
 
-    lateinit var mediaControllerCompat: MediaControllerCompat
+    private val mediaBrowserConnectionCallback = MediaBrowserConnectionCallback(context)
 
-    private val mediaBrowserConnectionCallback = MediaBrowserConnectedCallBack(context)
-
-    private val mediabrowser = MediaBrowserCompat(
+    private val mediaBrowser = MediaBrowserCompat(
         context,
         ComponentName(
             context,
@@ -44,56 +41,69 @@ class MusicServiceConnection(
         ),
         mediaBrowserConnectionCallback,
         null
-    ).apply {
-        connect()
-    }
-    val transportController: MediaControllerCompat.TransportControls
-        get() = mediaControllerCompat.transportControls
+    ).apply { connect() }
 
-    fun subscribe(parentId:String,callback:MediaBrowserCompat.SubscriptionCallback){
-        mediabrowser.subscribe(parentId,callback)
-    }
+    val transportControls: MediaControllerCompat.TransportControls
+        get() = mediaController.transportControls
 
-    fun unSubscribe(parentId:String,callback:MediaBrowserCompat.SubscriptionCallback){
-        mediabrowser.unsubscribe(parentId,callback)
+    fun subscribe(parentId: String, callback: MediaBrowserCompat.SubscriptionCallback) {
+        mediaBrowser.subscribe(parentId, callback)
     }
 
-    private inner class MediaBrowserConnectedCallBack(
-        private val context:Context
-    ):MediaBrowserCompat.ConnectionCallback(){
+    fun unsubscribe(parentId: String, callback: MediaBrowserCompat.SubscriptionCallback) {
+        mediaBrowser.unsubscribe(parentId, callback)
+    }
+
+    private inner class MediaBrowserConnectionCallback(
+        private val context: Context
+    ) : MediaBrowserCompat.ConnectionCallback() {
+
         override fun onConnected() {
-            mediaControllerCompat = MediaControllerCompat(context,mediabrowser.sessionToken).apply {
-                registerCallback(MediaControllerCallBack())
+            Log.d("MusicServiceConnection", "CONNECTED")
+            mediaController = MediaControllerCompat(context, mediaBrowser.sessionToken).apply {
+                registerCallback(MediaContollerCallback())
             }
-            _networkConnected.postValue(Event(Resource.success(true)))
+            _isConnected.postValue(Event(Resource.success(true)))
         }
 
         override fun onConnectionSuspended() {
-            _networkConnected.postValue(Event(Resource.error("The network was suspended",false)))
+            Log.d("MusicServiceConnection", "SUSPENDED")
+
+            _isConnected.postValue(Event(Resource.error(
+                "The connection was suspended", false
+            )))
         }
 
         override fun onConnectionFailed() {
-            _networkConnected.postValue(Event(Resource.error("couldn't connect to the media browser",false)))
+            Log.d("MusicServiceConnection", "FAILED")
+
+            _isConnected.postValue(Event(Resource.error(
+                "Couldn't connect to media browser", false
+            )))
         }
     }
 
-    inner class MediaControllerCallBack:MediaControllerCompat.Callback(){
+    private inner class MediaContollerCallback : MediaControllerCompat.Callback() {
+
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
             _playbackState.postValue(state)
         }
 
         override fun onMetadataChanged(metadata: MediaMetadataCompat?) {
-            _currentPlayingSong.postValue(metadata)
+            _curPlayingSong.postValue(metadata)
         }
 
         override fun onSessionEvent(event: String?, extras: Bundle?) {
             super.onSessionEvent(event, extras)
-            when(event){
-                NETWORK_ERROR->{
-                    _networkError.postValue(
-                        Event(Resource.error("Couldn't connect to the server,please check your internet connection",null))
+            when(event) {
+                NETWORK_ERROR -> _networkError.postValue(
+                    Event(
+                        Resource.error(
+                            "Couldn't connect to the server. Please check your internet connection.",
+                            null
+                        )
                     )
-                }
+                )
             }
         }
 
@@ -101,5 +111,21 @@ class MusicServiceConnection(
             mediaBrowserConnectionCallback.onConnectionSuspended()
         }
     }
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

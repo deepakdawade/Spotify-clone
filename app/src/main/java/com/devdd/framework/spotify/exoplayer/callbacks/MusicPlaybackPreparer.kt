@@ -1,33 +1,31 @@
 package com.devdd.framework.spotify.exoplayer.callbacks
 
-import android.media.session.PlaybackState
 import android.net.Uri
 import android.os.Bundle
 import android.os.ResultReceiver
 import android.support.v4.media.MediaMetadataCompat
-import com.devdd.framework.spotify.exoplayer.FirebaseMusicSource
+import android.support.v4.media.session.PlaybackStateCompat
 import com.google.android.exoplayer2.ControlDispatcher
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
+import com.devdd.framework.spotify.exoplayer.FirebaseMusicSource
 
-/**
- * Created by @author Deepak Dawade on 9/30/2020 at 9:30 PM.
- * Copyright (c) 2020 deepakdawade.dd@gmail.com All rights reserved.
- **/
 class MusicPlaybackPreparer(
     private val firebaseMusicSource: FirebaseMusicSource,
-    private val playerPrepared:(MediaMetadataCompat?)-> Unit
-):MediaSessionConnector.PlaybackPreparer {
+    private val playerPrepared: (MediaMetadataCompat?) -> Unit
+) : MediaSessionConnector.PlaybackPreparer {
+
     override fun onCommand(
         player: Player,
         controlDispatcher: ControlDispatcher,
         command: String,
         extras: Bundle?,
         cb: ResultReceiver?
-    ): Boolean = false
+    ) = false
 
     override fun getSupportedPrepareActions(): Long {
-        return PlaybackState.ACTION_PREPARE_FROM_MEDIA_ID or PlaybackState.ACTION_PLAY_FROM_MEDIA_ID
+        return PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID or
+                PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID
     }
 
     override fun onPrepare(playWhenReady: Boolean) = Unit
@@ -37,9 +35,24 @@ class MusicPlaybackPreparer(
             val itemToPlay = firebaseMusicSource.songs.find { mediaId == it.description.mediaId }
             playerPrepared(itemToPlay)
         }
-     }
+    }
 
-    override fun onPrepareFromSearch(query: String, playWhenReady: Boolean, extras: Bundle?)  = Unit
+    override fun onPrepareFromSearch(query: String, playWhenReady: Boolean, extras: Bundle?) = Unit
 
-    override fun onPrepareFromUri(uri: Uri, playWhenReady: Boolean, extras: Bundle?)  = Unit
+    override fun onPrepareFromUri(uri: Uri, playWhenReady: Boolean, extras: Bundle?) = Unit
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

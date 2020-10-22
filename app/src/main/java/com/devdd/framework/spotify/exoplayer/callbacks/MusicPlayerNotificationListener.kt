@@ -3,17 +3,14 @@ package com.devdd.framework.spotify.exoplayer.callbacks
 import android.app.Notification
 import android.content.Intent
 import androidx.core.content.ContextCompat
-import com.devdd.framework.spotify.exoplayer.MusicContants.NOTIFICATION_ID
-import com.devdd.framework.spotify.exoplayer.MusicService
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
+import com.devdd.framework.spotify.exoplayer.MusicService
+import com.devdd.framework.spotify.other.Constants.NOTIFICATION_ID
 
-/**
- * Created by @author Deepak Dawade on 9/29/2020 at 11:54 PM.
- * Copyright (c) 2020 deepakdawade.dd@gmail.com All rights reserved.
- **/
 class MusicPlayerNotificationListener(
     private val musicService: MusicService
 ) : PlayerNotificationManager.NotificationListener {
+
     override fun onNotificationCancelled(notificationId: Int, dismissedByUser: Boolean) {
         super.onNotificationCancelled(notificationId, dismissedByUser)
         musicService.apply {
@@ -30,7 +27,7 @@ class MusicPlayerNotificationListener(
     ) {
         super.onNotificationPosted(notificationId, notification, ongoing)
         musicService.apply {
-            if (ongoing && !isForegroundService) {
+            if(ongoing && !isForegroundService) {
                 ContextCompat.startForegroundService(
                     this,
                     Intent(applicationContext, this::class.java)
@@ -41,3 +38,14 @@ class MusicPlayerNotificationListener(
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
